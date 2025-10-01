@@ -5,8 +5,10 @@ long as you're holding a movement key.
 
 ## Installation
 
-This mod requires [BepInEx](https://github.com/BepInEx/BepInEx) 5, and is installed to your
-`BepInEx/plugins` directory.
+You can download this mod from the
+[releases page](https://github.com/Esper89/Silksong-ToggleSprint/releases/latest), below the
+changelog. This mod requires [BepInEx](https://github.com/BepInEx/BepInEx) 5, and is installed to
+your `BepInEx/plugins` directory.
 [Configuration Manager](https://github.com/BepInEx/BepInEx.ConfigurationManager) can be used with
 this mod.
 
