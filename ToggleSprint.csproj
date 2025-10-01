@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Version>0.0.0</Version>
+        <Authors>Esper89</Authors>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>12.0</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RestoreAdditionalProjectSources>
+            https://nuget.bepinex.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+        <BepInExPluginGuid>$(Authors).$(RootNamespace)</BepInExPluginGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="UnityEngine.Modules" Version="6000.0.50"/>
+        <PackageReference Include="Silksong.GameLibs" Version="1.1.0-silksong1.0.28650"/>
+        <PackageReference Include="BepInEx.Core" Version="5.4.21"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.1.0"/>
+        <PackageReference Include="HarmonyX" Version="2.9.0"/>
+    </ItemGroup>
+    <Target Name="CopyToTargetDir" AfterTargets="PostBuildEvent">
+        <Copy SourceFiles="$(TargetPath);LICENSE" DestinationFolder="target/$(Configuration)"/>
+        <Copy SourceFiles="dist-readme.md" DestinationFiles="target/$(Configuration)/README.md"/>
+        <CreateItem Include="target/$(Configuration)/**/*">
+            <Output TaskParameter="Include" ItemName="TargetFiles"/>
+        </CreateItem>
+    </Target>
+    <Target
+        Name="CopyToPluginsDir"
+        AfterTargets="CopyToTargetDir"
+        Condition="'$(Configuration)' == 'Debug' And Exists('game-dir.txt')"
+    >
+        <ReadLinesFromFile File="game-dir.txt">
+            <Output TaskParameter="Lines" ItemName="GameDir"/>
+        </ReadLinesFromFile>
+        <Copy
+            SourceFiles="@(TargetFiles)"
+            DestinationFolder=
+                "@(GameDir->'%(Identity)/BepInEx/plugins/$(ProjectName)/%(RecursiveDir)')"
+        />
+    </Target>
+    <Target
+        Name="ZipDist"
+        AfterTargets="CopyToTargetDir"
+        Condition="'$(Configuration)' == 'Release'"
+    >
+        <Copy
+            SourceFiles="@(TargetFiles)"
+            DestinationFolder="target/dist/$(ProjectName)/%(RecursiveDir)"
+        />
+        <ZipDirectory
+            SourceDirectory="target/dist"
+            DestinationFile="target/$(ProjectName).zip"
+            Overwrite="True"
+        />
+    </Target>
+    <Target Name="ZipThunderstore" AfterTargets="ZipDist">
+        <CreateItem Include="thunderstore/**/*">
+            <Output TaskParameter="Include" ItemName="ThunderstoreFiles"/>
+        </CreateItem>
+        <Copy
+            SourceFiles="@(TargetFiles)"
+            DestinationFolder="target/thunderstore/dist/$(ProjectName)/%(RecursiveDir)"
+        />
+        <Copy
+            SourceFiles="@(ThunderstoreFiles)"
+            DestinationFolder="target/thunderstore/dist/%(RecursiveDir)"
+        />
+        <ZipDirectory
+            SourceDirectory="target/thunderstore/dist"
+            DestinationFile="target/thunderstore/$(Authors)-$(ProjectName)-$(Version).zip"
+            Overwrite="True"
+        />
+    </Target>
+</Project>
