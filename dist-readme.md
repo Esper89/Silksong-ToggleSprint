@@ -1,4 +1,4 @@
-# Toggle Sprint v0.0.0
+# Toggle Sprint v1.0.0
 
 Toggle Sprint is a Silksong mod that lets you keep sprinting without holding down the Dash key as
 long as you're holding a movement key.
