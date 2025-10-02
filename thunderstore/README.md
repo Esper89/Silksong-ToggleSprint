@@ -17,7 +17,7 @@ stick the Dash key down, and it will remain pressed until all movement keys are 
 the Dash key again while holding movement keys will toggle it back off.
 
 This mod can be disabled by editing its config file or using Configuration Manager to set
-`General.Enabled = false`.
+`Enabled = false` in the `[General]` section.
 
 ## License
 

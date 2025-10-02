@@ -8,4 +8,4 @@ This mod requires [url=https://nexusmods.com/hollowknightsilksong/mods/26]BepInE
 
 Once this mod is installed, by default, pressing the Dash key while holding down a movement key will stick the Dash key down, and it will remain pressed until all movement keys are released. Pressing the Dash key again while holding movement keys will toggle it back off.
 
-This mod can be disabled by editing its config file or using Configuration Manager to set [font=Courier New][b]General.Enabled = false[/b][/font].
+This mod can be disabled by editing its config file or using Configuration Manager to set [font=Courier New][b]Enabled = false[/b][/font] in the [font=Courier New][b][General][/b][/font] section.
