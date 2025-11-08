@@ -4,25 +4,35 @@ using HarmonyLib;
 
 namespace ToggleSprint;
 
-[BepInPlugin(PluginInfo.PLUGIN_GUID, "Toggle Sprint", PluginInfo.PLUGIN_VERSION)]
-class Mod : BaseUnityPlugin
+[BepInAutoPlugin]
+sealed partial class Mod : BaseUnityPlugin
 {
     void Awake()
     {
-        this.enabled = base.Config.Bind("General", "Enabled", true, "Enable toggle sprint");
-        Mod.Instance = this;
-        new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
+        Mod._instance = this;
+        this._config = new(base.Config);
+        new Harmony(Mod.Id).PatchAll();
     }
 
-    static Mod? Instance = null;
-    new ConfigEntry<bool>? enabled = null;
+    static Mod? _instance = null;
+    static Mod Instance => Mod._instance ? Mod._instance :
+        throw new NullReferenceException($"{nameof(Mod)} accessed before {nameof(Awake)}");
+
+    ConfigEntries? _config = null;
+    new ConfigEntries Config => this._config!;
+
+    sealed class ConfigEntries(ConfigFile file)
+    {
+        internal bool Enabled => this._enabled.Value;
+        ConfigEntry<bool> _enabled = file.Bind("General", "Enabled", true, "Enable toggle sprint");
+    }
 
     bool sprinting = false;
     bool dashPressedPrev = false;
 
     void UpdateSprinting()
     {
-        if (!this.enabled!.Value || !TryUpdateSprinting())
+        if (!this.Config.Enabled || !TryUpdateSprinting())
         {
             this.sprinting = false;
             this.dashPressedPrev = false;
@@ -57,6 +67,6 @@ class Mod : BaseUnityPlugin
     [HarmonyPatch(typeof(InControl.InputManager), nameof(InControl.InputManager.UpdateInternal))]
     static class PeriodicallyUpdateSprinting
     {
-        static void Postfix() => Mod.Instance!.UpdateSprinting();
+        static void Postfix() => Mod.Instance.UpdateSprinting();
     }
 }

@@ -1,3 +1,5 @@
+# Toggle Sprint
+
 Toggle Sprint lets you keep sprinting without holding down the Dash key as long as you're holding a
 movement key.
 
@@ -18,6 +20,11 @@ the Dash key again while holding movement keys will toggle it back off.
 
 This mod can be disabled by editing its config file or using Configuration Manager to set
 `Enabled = false` in the `[General]` section.
+
+## Repository
+
+This mod's source code can be found in its
+[GitHub repository](https://github.com/Esper89/Silksong-ToggleSprint).
 
 ## License
 

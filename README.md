@@ -24,7 +24,7 @@ using Configuration Manager to set `Enabled = false` in the `[General]` section.
 ## Building
 
 To build this mod for development, run `dotnet build` in the project's root directory. The output
-will be in `target/Debug`. If you create a text file in the project root called `game-dir.txt` and
+will be in `target/Debug`. If you create a text file in the project root called `game-dirs.txt` and
 input the path to your Silksong installation, the output of debug builds will be automatically
 installed into that game directory.
 
